@@ -14,14 +14,8 @@ We create a permutation type genotype where every value represents a location
 
 ### VRP Genetic Algorithm
 
-- Complete the `fitness_score` function:
-  - Every `chunk_size` locations, sum the distance between two points using the distance duration matrix. Eg:
-
-    ```console
-    [0,1,2,3,4,0,5,6] -> [0,1,2,3,4] y [0,5,6]. La distancia total seria: [0,1] + [1,2] + [2,3] + [3,4] + [0,5] + [5,6]
-    ```
-
 - `crossover`: Implementation (we can't delegate the validation of springs only applying the penalty score in the `fitness_function`).
+- Check chunk_size (is a little mess depending of the type of the journey)
 
 ### Matrix providers
 

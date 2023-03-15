@@ -2,6 +2,8 @@ defmodule Genetics.Evolution.Mutation do
   @moduledoc """
   Contains functions with different aproaches to make the mutation
 
+  https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
+
   """
   alias Genetics.Types.Chromosome
 

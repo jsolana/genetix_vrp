@@ -6,7 +6,7 @@ defmodule Genetics.Problems.OneMax do
   ## Run the problem
 
   ```
-    Genetics.Evolution.run(Genetics.Problems.OneMax, size: 500)
+    Genetics.Evolution.run(Genetics.Problems.OneMax, size: 1000)
   ```
   """
   @behaviour Genetics.Problem

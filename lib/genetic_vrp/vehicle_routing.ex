@@ -105,10 +105,30 @@ defmodule GeneticVrp.VehicleRouting do
     chunk_size = Keyword.get(opts, :chunk_size, 4)
 
     if chromosome_is_valid(chromosome, fix_start, fix_end, chunk_size) do
-      _matrix = Keyword.get(opts, :matrix)
-      # Logger.info("Matrix: #{inspect(matrix)}")
-      Enum.sum(chromosome.genes)
+      matrix = Keyword.get(opts, :matrix)
+
+      pairs =
+        chromosome.genes
+        # TODO
+        |> Enum.chunk_every(chunk_size + 1)
+        |> Enum.reduce([], fn sublist, acc ->
+          (acc ++ Enum.chunk_every(sublist, 2, 1, :discard))
+          |> Enum.filter(&(length(&1) == 2))
+          |> Enum.map(&Enum.slice(&1, 0, 2))
+        end)
+
+      # Logger.info(
+      #  "Chromosome: #{inspect(chromosome.genes)}\n\nPairs: #{inspect(pairs)}\n\n#{inspect(matrix)}"
+      # )
+
+      pairs
+      |> Enum.reduce([], fn [x, y], acc ->
+        {distance, _duration} = Map.get(matrix, {x, y}, {0, 0})
+        [distance] ++ acc
+      end)
+      |> Enum.sum()
     else
+      # max integer
       :math.pow(2, 63) - 1
     end
   end

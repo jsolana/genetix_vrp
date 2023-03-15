@@ -4,7 +4,7 @@ defmodule Genetics.Problems.Speller do
   ## Run the problem
 
   ```
-    Genetics.Evolution.run(Genetics.Problems.Speller, target: "helloelixir")
+    Genetics.Evolution.run(Genetics.Problems.Speller, target: "elixir")
   ```
   """
   @behaviour Genetics.Problem

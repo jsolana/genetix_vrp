@@ -15,8 +15,8 @@ defmodule Genetics.Evolution do
   A basic genetic  problem consists of: `genotype/0`, `fitness_function/1`, and `terminate?/1`.
   ```
   defmodule OneMax do
-    @behaviour GeneticVrp.Genetics.Problem
-    alias GeneticVrp.Genetics.Types.Chromosome
+    @behaviour Genetics.Problem
+    alias Genetics.Types.Chromosome
 
     @impl true
     def genotype(opts \\ []) do
@@ -46,9 +46,7 @@ defmodule Genetics.Evolution do
   ```
 
   """
-  alias Genetics.Types.Chromosome
-  alias Genetics.Evolution.CrossOver
-  alias Genetics.Evolution.Mutation
+  alias Genetics.Evolution.{CrossOver, Mutation, Select, Evaluate}
 
   require Logger
 
@@ -83,19 +81,13 @@ defmodule Genetics.Evolution do
   end
 
   def evaluate(population, fitness_function, opts \\ []) do
-    population
-    |> Enum.map(fn chromosome ->
-      fitness = fitness_function.(chromosome, opts)
-      age = chromosome.age + 1
-      %Chromosome{chromosome | fitness: fitness, age: age}
-    end)
-    |> Enum.sort_by(& &1.fitness, &>=/2)
+    evaluate_operator = Keyword.get(opts, :evaluate_type, &Evaluate.heuristic_evaluation/3)
+    evaluate_operator.(population, fitness_function, opts)
   end
 
-  def select(population, _opts \\ []) do
-    population
-    |> Enum.chunk_every(2)
-    |> Enum.map(&List.to_tuple(&1))
+  def select(population, opts \\ []) do
+    select_operator = Keyword.get(opts, :select_type, &Select.select_elite/2)
+    select_operator.(population, opts)
   end
 
   def crossover(population, opts \\ []) do
