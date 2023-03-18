@@ -37,10 +37,15 @@ defmodule GeneticVrp do
      {3, 3} => {0.0, 0.0}
    }
   }}
+
+  locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [27.1,60.1]]
+  GeneticVrp.calculate_routes(locations, fix_start: 0, max_generation: 2, population_size: 5000)
+
   """
 
   # @adapter GeneticVrp.Matrix.Adapter.OpenRouteServiceClient
-  alias GeneticVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
+  # alias GeneticVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
+  alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: Adapter
   alias Genetics.Evolution
   alias GeneticVrp.VehicleRouting
   require Logger
@@ -56,9 +61,10 @@ defmodule GeneticVrp do
               [
                 matrix: matrix,
                 size: length(locations),
-                crossover_custom_operator: &VehicleRouting.custom_crossover/2,
-                mutation_custom_operator: &VehicleRouting.custom_mutation/2,
-                population_size: 10
+                crossover_type: &VehicleRouting.custom_crossover/2,
+                mutation_type: &VehicleRouting.custom_mutation/2,
+                sort_criteria: &<=/2,
+                population_size: length(locations) * 100
               ]
           )
 

@@ -21,4 +21,47 @@ defmodule GeneticVrp.Utils do
       end)
     end)
   end
+
+  @doc """
+  Generate a random number avoiding specific deny numbers
+  Returns: `number()`.
+  It is possible to replace by take_random()
+
+  ## Examples
+
+    iex> deny_numbers = [0,1,2,3,4,5,6,7,8]
+    iex> 9 = GeneticVrp.Utils.random_allow_number(deny_numbers)
+
+    iex> deny_numbers = [1]
+    iex> 1 != GeneticVrp.Utils.random_allow_number(deny_numbers)
+  """
+  def random_allow_number(deny_numbers, opts \\ []) do
+    size = Keyword.get(opts, :size, 10)
+
+    Enum.shuffle(for(index <- 0..(size - 1), do: index))
+    |> Enum.filter(fn x -> !Enum.member?(deny_numbers, x) end)
+    |> Enum.random()
+  end
+
+  @doc """
+  Swap two elements of a list
+  Returns: `list()`.
+
+  ## Examples
+
+    iex> list = [0,1,2,3,4,5,6,7,8]
+    iex> [8, 1, 2, 3, 4, 5, 6, 7, 0] = GeneticVrp.Utils.swap(list, 0, 8)
+
+    iex> list = [0,1,2,3,4,5,6,7,8]
+    iex> [1, 0, 3, 2, 4, 5, 6, 7, 8] = GeneticVrp.Utils.swap(list, 0, 1) |> GeneticVrp.Utils.swap(2, 3)
+
+  """
+  def swap(list, position_1, position_2) do
+    element_1 = Enum.at(list, position_1)
+    element_2 = Enum.at(list, position_2)
+
+    list
+    |> List.replace_at(position_1, element_2)
+    |> List.replace_at(position_2, element_1)
+  end
 end

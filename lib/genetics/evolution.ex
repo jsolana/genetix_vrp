@@ -51,17 +51,26 @@ defmodule Genetics.Evolution do
   require Logger
 
   def run(problem, opts \\ []) do
-    Logger.info("Running #{inspect(problem)} with opts: #{inspect(opts)}")
+    Logger.info("Running #{inspect(problem)}")
+    # Logger.info("opts: #{inspect(opts)}")
     population = initialize(&problem.genotype/1, opts)
 
     population
     |> evolve(problem, opts)
   end
 
+  def initialize(genotype, opts \\ []) do
+    population_size = Keyword.get(opts, :population_size, 100)
+    population = for _ <- 1..population_size, do: genotype.(opts)
+    # IO.gets("Population: #{inspect(population)}\nPress Enter to continue...")
+    population
+  end
+
   def evolve(population, problem, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/2, opts)
     best = hd(population)
     # IO.write("\rCurrent Best: #{fitness_function.(best)}")
+    # IO.gets("Population evolved: #{inspect(population)}\nCurrent Best: #{inspect(best)}\nPress Enter to continue...")
 
     if problem.terminate?(population, opts) do
       IO.write("\r")
@@ -75,28 +84,31 @@ defmodule Genetics.Evolution do
     end
   end
 
-  def initialize(genotype, opts \\ []) do
-    population_size = Keyword.get(opts, :population_size, 100)
-    for _ <- 1..population_size, do: genotype.(opts)
-  end
-
   def evaluate(population, fitness_function, opts \\ []) do
     evaluate_operator = Keyword.get(opts, :evaluate_type, &Evaluate.heuristic_evaluation/3)
-    evaluate_operator.(population, fitness_function, opts)
+    result = evaluate_operator.(population, fitness_function, opts)
+    # IO.gets("Evaluate result: #{inspect(result)}\nPress Enter to continue...")
+    result
   end
 
   def select(population, opts \\ []) do
     select_operator = Keyword.get(opts, :select_type, &Select.select_elite/2)
-    select_operator.(population, opts)
+    result = select_operator.(population, opts)
+    # IO.gets("Select result: #{inspect(result)}\nPress Enter to continue...")
+    result
   end
 
   def crossover(population, opts \\ []) do
     crossover_operator = Keyword.get(opts, :crossover_type, &CrossOver.crossover_cx_one_point/2)
-    crossover_operator.(population, opts)
+    result = crossover_operator.(population, opts)
+    # IO.gets("Crossover result: #{inspect(result)}\nPress Enter to continue...")
+    result
   end
 
   def mutation(population, opts \\ []) do
     mutation_operator = Keyword.get(opts, :mutation_type, &Mutation.mutation_shuffle/2)
-    mutation_operator.(population, opts)
+    result = mutation_operator.(population, opts)
+    # IO.gets("Mutation result: #{inspect(result)}\nPress Enter to continue...")
+    result
   end
 end

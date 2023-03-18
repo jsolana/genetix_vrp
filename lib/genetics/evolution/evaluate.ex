@@ -11,12 +11,17 @@ defmodule Genetics.Evolution.Evaluate do
   require Logger
 
   def heuristic_evaluation(population, fitness_function, opts \\ []) do
+    sort_criteria = Keyword.get(opts, :sort_criteria, &>=/2)
+
     population
     |> Enum.map(fn chromosome ->
       fitness = fitness_function.(chromosome, opts)
       age = chromosome.age + 1
+
+      # IO.gets("Fitness function for #{inspect(chromosome)}\nResult: #{inspect(fitness)}\nPress Enter to continue...")
+
       %Chromosome{chromosome | fitness: fitness, age: age}
     end)
-    |> Enum.sort_by(& &1.fitness, &>=/2)
+    |> Enum.sort_by(& &1.fitness, sort_criteria)
   end
 end

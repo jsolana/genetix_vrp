@@ -23,7 +23,7 @@ defmodule Genetics.Evolution.CrossOver do
   end
 
   # Crossover for permutations
-  def crossover_cx_ordered(population, _opts) do
+  def crossover_cx_ordered(population, _opts \\ []) do
     population
     |> Enum.reduce(
       [],

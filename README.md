@@ -14,8 +14,10 @@ We create a permutation type genotype where every value represents a location
 
 ### VRP Genetic Algorithm
 
-- `crossover`: Implementation (we can't delegate the validation of springs only applying the penalty score in the `fitness_function`).
+- `crossover`: Current implementation doesnt work
+- Implement other select strategies
 - Check chunk_size (is a little mess depending of the type of the journey)
+- Documentar todas las posibilidades de configuracion
 
 ### Matrix providers
 

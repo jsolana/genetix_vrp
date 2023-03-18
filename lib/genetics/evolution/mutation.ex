@@ -9,7 +9,7 @@ defmodule Genetics.Evolution.Mutation do
 
   require Logger
 
-  def mutation_shuffle(population, opts) do
+  def mutation_shuffle(population, opts \\ []) do
     mutation_probability = Keyword.get(opts, :mutation_probability, 0.05)
 
     population
