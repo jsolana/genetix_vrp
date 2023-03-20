@@ -1,11 +1,16 @@
 defmodule Genetics.Problems.Speller do
   @moduledoc """
-  A specific problem implementation to obtain @target (a-z no whitespaces / Uppercases / etc.)
-  ## Run the problem
+  A specific problem implementation to obtain @target (a-z no whitespaces) string.
 
-  ```
-    Genetics.Evolution.run(Genetics.Problems.Speller, target: "elixir")
-  ```
+  Hyperparameters
+
+    - `target` an a-z no whitespaces string. By default `elixir`.
+    - `max_generation, termination criteria. By default `10_000`.
+
+  ## Examples
+
+    iex> Genetics.Evolution.run(Genetics.Problems.Speller, target: "elixir", max_generation: 1)
+
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome
@@ -31,8 +36,9 @@ defmodule Genetics.Problems.Speller do
   end
 
   @impl true
-  def terminate?([best | _], _opts \\ []) do
+  def terminate?([best | _], opts \\ []) do
+    max_generation = Keyword.get(opts, :max_generation, 10_000)
     IO.write("\r#{inspect(best.fitness)}")
-    best.fitness == 1
+    best.fitness == 1 || best.age == max_generation
   end
 end

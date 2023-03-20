@@ -1,45 +1,52 @@
 defmodule GeneticVrp do
   @moduledoc """
-  This module define the methods to invoke genetic algorithms to solve VRP
-  To run a Problem you only need to:
+  This module define the functions to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetics`).
+  The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks
+  "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of customers?"
+  It generalises the travelling salesman problem (TSP).
 
-  alias GeneticVrp.VehicleRouting
-  alias Genetics.Evolution
-  opts = []
-  Evolution.run(VehicleRouting, opts )
+  To run the algorithm you only need to call `calculate_routes/2` function providing the list of locations and the hyperparameters required.
 
-  Genetics.Evolution.run(GeneticVrp.VehicleRouting, opts)
+  ## Examples
 
-  To obtain the matrix:
+    iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [21.1,60.1]]
+    iex> GeneticVrp.calculate_routes(locations, fix_start: 0, max_generation: 5_000, population_size: 1_000)
 
-  locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
-  {:ok, matrix} = GeneticVrp.get_matrix(locations)
+  This module internally customize the VehicleRoutingProblem with custom hyperparameters as:
 
-  {:ok,
-  %GeneticVrp.Types.DistanceDurationMatrix{
-   locations: [[9.7, 48.4], [9.2, 49.1], [10.1, 50.1], [20.1, 60.1]],
-   matrix: %{
-     {0, 0} => {0.0, 0.0},
-     {0, 1} => {145722.03, 6552.6},
-     {0, 2} => {273238.0, 9483.85},
-     {0, 3} => {1875021.75, 116402.3},
-     {1, 0} => {146857.2, 6336.95},
-     {1, 1} => {0.0, 0.0},
-     {1, 2} => {176026.67, 6729.5},
-     {1, 3} => {1777810.5, 113647.95},
-     {2, 0} => {270151.53, 9657.62},
-     {2, 1} => {172690.25, 6781.27},
-     {2, 2} => {0.0, 0.0},
-     {2, 3} => {1621698.75, 109354.7},
-     {3, 0} => {1965809.5, 79862.18},
-     {3, 1} => {1868348.25, 76985.84},
-     {3, 2} => {1713152.63, 72741.59},
-     {3, 3} => {0.0, 0.0}
-   }
-  }}
+    Common hyperparameters:
+        - `crossover_type`:       Crossover operator. By defaul `crossover_cx_one_point/3`. To run successfully this problem, you need to override this property using `custom_crossover` function.
+        - `mutation_type`:        Mutation operator. By default `mutation_shuffle/2`. To run successfully this problem, you need to override this property using `custom_mutation` function.
 
-  locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [27.1,60.1]]
-  GeneticVrp.calculate_routes(locations, fix_start: 0, max_generation: 2, population_size: 5000)
+      Mandatory hyperparameters:
+        - `matrix`:               `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
+
+
+  For more information about the hyperparameters that the problem accept, check the documentation of `GeneticVrp.VehicleRoutingProblem`.
+
+  When call `calculate_routes/2` internally:
+
+  1) Get the distance / duration matrix
+  2) Set specific hyperparameters as:
+    - `crossover_type` operator
+    - `mutation_type` opertor
+    - `matrix`
+    - `size` using `length(locations)`
+    - `sort_criteria` ordering the populations by fitness score, minimal first (`&<=2`).
+    - `population_size` using `size`* 100
+
+
+
+  To run the `VehicleRoutingProblem` you can use directly the `Genetics.Evolution` with the options required.
+
+  ## Examples
+
+    iex> alias GeneticVrp.VehicleRoutingProblem
+    iex> alias Genetics.Evolution
+    iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
+    iex> {:ok, matrix} = GeneticVrp.get_matrix(locations)
+    iex> opts = [matrix: matrix, max_generation: 1]
+    iex> Evolution.run(VehicleRoutingProblem, opts )
 
   """
 
@@ -47,22 +54,21 @@ defmodule GeneticVrp do
   # alias GeneticVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
   alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: Adapter
   alias Genetics.Evolution
-  alias GeneticVrp.VehicleRouting
+  alias GeneticVrp.VehicleRoutingProblem
   require Logger
 
   def calculate_routes(locations, opts \\ []) do
     case get_matrix(locations, opts) do
       {:ok, matrix} ->
-        # Logger.info("Matrix: #{inspect(matrix)}")
         soln =
           Evolution.run(
-            VehicleRouting,
+            VehicleRoutingProblem,
             opts ++
               [
                 matrix: matrix,
                 size: length(locations),
-                crossover_type: &VehicleRouting.custom_crossover/2,
-                mutation_type: &VehicleRouting.custom_mutation/2,
+                crossover_type: &VehicleRoutingProblem.custom_crossover/3,
+                mutation_type: &VehicleRoutingProblem.custom_mutation/2,
                 sort_criteria: &<=/2,
                 population_size: length(locations) * 100
               ]

@@ -1,8 +1,10 @@
 defmodule Genetics.Evolution.Evaluate do
   @moduledoc """
-  Contain functions with different aproaches to make the selection
+  Contain functions with different aproaches to make the evaluation.
+  Every problem has an objetive. The goal of optimization is to maximize or minimize a value.
 
-  https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
+  In genetic algorithms, fitness functions tell you how well you are. You use them as a barometer to measure
+  your progress toward the best solution.
 
   """
 
@@ -10,6 +12,13 @@ defmodule Genetics.Evolution.Evaluate do
 
   require Logger
 
+  @doc """
+  Use `fitness_function` to evaluate every individual of the population and returns a list sorted by
+  `sort_criteria` hyperparameter.
+
+  A fitness function is a heuristic, an approximation or estimation based on limited information.
+
+  """
   def heuristic_evaluation(population, fitness_function, opts \\ []) do
     sort_criteria = Keyword.get(opts, :sort_criteria, &>=/2)
 

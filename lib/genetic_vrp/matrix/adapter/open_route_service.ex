@@ -1,36 +1,19 @@
-defmodule GeneticVrp.Matrix.Adapter.OpenRouteServiceClient do
+defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
   use Tesla
 
   @moduledoc """
-  Client of OpenRouteService Matrix function (https://openrouteservice.org/dev/#/api-docs/matrix) to retrieve the distance / duration matrix
+  Module that define functions to obtain the distance / duration matrix using the [OpenRouteService](https://openrouteservice.org/dev/#/api-docs/matrix).
+  We use `:matrix_profile` hyperparameter with default value `driving-car`.
 
-  locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
-  {:ok, matrix} = GeneticVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
+  ## Examples
 
-  {:ok,
-  %GeneticVrp.Types.DistanceDurationMatrix{
-   locations: [[9.7, 48.4], [9.2, 49.1], [10.1, 50.1], [20.1, 60.1]],
-   matrix: %{
-     {0, 0} => {0.0, 0.0},
-     {0, 1} => {145722.03, 6552.6},
-     {0, 2} => {273238.0, 9483.85},
-     {0, 3} => {1875021.75, 116402.3},
-     {1, 0} => {146857.2, 6336.95},
-     {1, 1} => {0.0, 0.0},
-     {1, 2} => {176026.67, 6729.5},
-     {1, 3} => {1777810.5, 113647.95},
-     {2, 0} => {270151.53, 9657.62},
-     {2, 1} => {172690.25, 6781.27},
-     {2, 2} => {0.0, 0.0},
-     {2, 3} => {1621698.75, 109354.7},
-     {3, 0} => {1965809.5, 79862.18},
-     {3, 1} => {1868348.25, 76985.84},
-     {3, 2} => {1713152.63, 72741.59},
-     {3, 3} => {0.0, 0.0}
-   }
-  }}
+    iex> alias GeneticVrp.Matrix.Adapter.OpenRouteService, as: MatrixProvider
+    iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
+    iex> {:ok, matrix} = GeneticVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
+    iex> true = matrix.locations  == locations
 
-  OpenRouteService Matrix returns the  matrix from a list of locations. An example:
+  Internally the `OpenRouteService Matrix endpoint` returns the distance / duration matrix from a list of locations.
+  An example:
 
   ```json
   {
@@ -211,7 +194,7 @@ defmodule GeneticVrp.Matrix.Adapter.OpenRouteServiceClient do
 
   @impl Adapter
   def get_distance_duration_matrix(locations, opts \\ []) do
-    profile = Keyword.get(opts, :profile, "driving-car")
+    profile = Keyword.get(opts, :matrix_profile, "driving-car")
 
     request_body = %{
       locations: locations,

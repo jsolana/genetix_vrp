@@ -1,39 +1,28 @@
 defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
   @moduledoc """
-  Distance duration matrix implementation using a Great circle distance implementation
-  Distance in meters appying Harvesine formula
+  Distance duration matrix implementation using a Great circle distance implementation.
+  The great-circle distance, orthodromic distance, or spherical distance is the distance along a great circle.
 
-  ## Example
+  The Great cicle distance is the shortest distance between two points on the surface of a sphere, measured along the surface
+  of the sphere (as opposed to a straight line through the sphere's interior).
+  The distance between two points in Euclidean space is the length of a straight line between them,
+  but on the sphere there are no straight lines. In spaces with curvature, straight lines are replaced by geodesics.
+  Geodesics on the sphere are circles on the sphere whose centers coincide with the center of the sphere, and are called
+  `great circles`.
 
-    iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
-    iex> {:ok, matrix} = GeneticVrp.Matrix.Adapter.GreatCircleDistance.get_distance_duration_matrix(locations)
+  The distance is provided in meters appying Harvesine formula.
+  The duration is provided in seconds from the distance using `speed_in_meters` hyperparamter.
 
-  Calling get_distance_duration_matrix(locations) retrieves a `GeneticVrp.Types.DistanceDurationMatrix` with the distance /duration matrix
+  Note: Take in count this is a naive approach to calculate the distance / duration of a specific list of locations.
+  A lot of aspects are ommitted as traffic conditions, etc.
 
-  ```elixir
-      {:ok,
-      %GeneticVrp.Types.DistanceDurationMatrix{
-      locations: [[9.7, 48.4], [9.2, 49.1], [10.1, 50.1], [20.1, 60.1]],
-      matrix: %{
-        {0, 0} => {0, 0},
-        {0, 1} => {94796, 6825},
-        {0, 2} => {191454, 13785},
-        {0, 3} => {1706556, 122872},
-        {1, 0} => {94796, 6825},
-        {1, 1} => {0, 0},
-        {1, 2} => {148431, 10687},
-        {1, 3} => {1692340, 121848},
-        {2, 0} => {191454, 13785},
-        {2, 1} => {148431, 10687},
-        {2, 2} => {0, 0},
-        {2, 3} => {1544405, 111197},
-        {3, 0} => {1706556, 122872},
-        {3, 1} => {1692340, 121848},
-        {3, 2} => {1544405, 111197},
-        {3, 3} => {0, 0}
-      }
-      }}
-  ```
+  ## Examples
+
+  iex> alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: MatrixProvider
+  iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
+    iex> {:ok, matrix} = MatrixProvider.get_distance_duration_matrix(locations)
+    iex> true = (matrix.locations == locations)
+
   """
 
   @behaviour GeneticVrp.Matrix.Adapter

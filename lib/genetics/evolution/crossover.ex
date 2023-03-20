@@ -1,43 +1,80 @@
 defmodule Genetics.Evolution.CrossOver do
   @moduledoc """
-  Contain functions with different aproaches to make the crossover
+  Contain functions with different aproaches / strategies to make the crossover.
+  In genetic algorithms and evolutionary computation, crossover, also called recombination,
+  is a genetic operator used to combine the genetic information of two parents to generate new offspring.
 
-  https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
+  Possibles strategies:
+    - Single-point
+    - Order-one
+    - Uniform (TODO)
+    - Whole arithmetic Recombination (TODO)
+
+  [More information](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm))
 
   """
   alias Genetics.Types.Chromosome
 
   require Logger
 
-  def crossover_cx_one_point(population, _opts) do
-    population
-    |> Enum.reduce(
-      [],
-      fn {p1, p2}, acc ->
-        cx_point = :rand.uniform(length(p1.genes))
-        {{h1, t1}, {h2, t2}} = {Enum.split(p1.genes, cx_point), Enum.split(p2.genes, cx_point)}
-        {c1, c2} = {%Chromosome{p1 | genes: h1 ++ t2}, %Chromosome{p2 | genes: h2 ++ t1}}
-        [c1, c2 | acc]
-      end
-    )
+  @doc """
+  Single-point crossover is the most basic crossover strategy. It works like this:
+
+    1) Choose a random number k between 0..n-1 where n is the length of the parten chromosomes.
+    2) Split both parents at k to rpdocue four slices of genes.
+    3) Swap the tails of each parent at k produce two new children.
+
+  """
+  def crossover_cx_one_point(parent_1, parent_2, _opts \\ []) do
+    cx_point = :rand.uniform(length(parent_1.genes))
+
+    {{h1, t1}, {h2, t2}} =
+      {Enum.split(parent_1.genes, cx_point), Enum.split(parent_2.genes, cx_point)}
+
+    {%Chromosome{parent_1 | genes: h1 ++ t2}, %Chromosome{parent_2 | genes: h2 ++ t1}}
   end
 
-  # Crossover for permutations
-  def crossover_cx_ordered(population, _opts \\ []) do
-    population
-    |> Enum.reduce(
-      [],
-      fn {p1, p2}, acc ->
-        cx_start = Enum.random(0..(length(population) - 1))
-        cx_end = Enum.random((cx_start + 1)..(length(population) - 1))
-        offspring1_genes = (Enum.slice(p1.genes, cx_start, cx_end) ++ p2.genes) |> Enum.uniq()
-        offspring2_genes = (Enum.slice(p2.genes, cx_start, cx_end) ++ p1.genes) |> Enum.uniq()
+  @doc """
+  Order-one crossover, sometimes called "Davis order" crossover, is a crossover strategy on ordered list or permutations.
+  Order-one is  part of a unique set of crossover strategies that will preserve the integrity of a permutation without
+  the need for chromosome repair. It works like this:
 
-        {c1, c2} =
-          {%Chromosome{p1 | genes: offspring1_genes}, %Chromosome{p2 | genes: offspring2_genes}}
+    1) Select a random slice of genes from Parent 1.
+    2) Remove the values from the slice of Parent 1 from Parent 2.
+    3) Insert the slice from Parten 1 into the same position in Parent 2.
+    4) Repeat with a random slice from Parten 2.
 
-        [c1, c2 | acc]
-      end
-    )
+  """
+  def order_one_crossover(parent_1, parent_2, _opts \\ []) do
+    lim = Enum.count(parent_1.genes) - 1
+    # Get random range​
+    {i1, i2} =
+      [:rand.uniform(lim), :rand.uniform(lim)]
+      |> Enum.sort()
+      |> List.to_tuple()
+
+    # parent_2 contribution​
+    slice1 = Enum.slice(parent_1.genes, i1..i2)
+    slice1_set = MapSet.new(slice1)
+    parent_2_contrib = Enum.reject(parent_2.genes, &MapSet.member?(slice1_set, &1))
+    {head1, tail1} = Enum.split(parent_2_contrib, i1)
+
+    # parent_1 contribution​
+    slice2 = Enum.slice(parent_2.genes, i1..i2)
+    slice2_set = MapSet.new(slice2)
+    parent_1_contrib = Enum.reject(parent_1.genes, &MapSet.member?(slice2_set, &1))
+    {head2, tail2} = Enum.split(parent_1_contrib, i1)
+
+    # Make and return​
+    {c1, c2} = {head1 ++ slice1 ++ tail1, head2 ++ slice2 ++ tail2}
+
+    {%Chromosome{
+       genes: c1,
+       size: parent_1.size
+     },
+     %Chromosome{
+       genes: c2,
+       size: parent_2.size
+     }}
   end
 end

@@ -3,11 +3,14 @@ defmodule Genetics.Problems.OneMax do
   A specific genetic problem implementation for OneMax.
   The One-Max problem is a trivial problem: What is the maximum sum of a bitstring (a string consisting of only 1s and 0s) of length N.
 
-  ## Run the problem
+  Hyperparameters
 
-  ```
-    Genetics.Evolution.run(Genetics.Problems.OneMax, size: 1000)
-  ```
+    - `size` length of the bitestring (0s, 1s). Default `42`.
+
+  ## Examples
+
+    iex> Genetics.Evolution.run(Genetics.Problems.OneMax, size: 1000)
+
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome

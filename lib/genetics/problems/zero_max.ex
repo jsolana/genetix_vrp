@@ -3,11 +3,15 @@ defmodule Genetics.Problems.ZeroMax do
   A specific genetic problem implementation for ZeroMax.
   The Zero-Max problem is a trivial problem: What is the minimum sum of a bitstring (a string consisting of only 1s and 0s) of length N.
 
-  ## Run the problem
+  Hyperparameters
 
-  ```
-    Genetics.Evolution.run(Genetics.Problems.ZeroMax, size: 1000, sort_criteria: &<=/2)
-  ```
+    - `size` length of the bitestring (0s, 1s). Default `42`.
+    - `sort_criteria` due its a minimal optimization problem, we need to override the defaul value based on max, with the `&<=2` operator.
+
+  ## Examples
+
+    iex> Genetics.Evolution.run(Genetics.Problems.ZeroMax, size: 1000, sort_criteria: &<=/2)
+
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome

@@ -76,9 +76,10 @@ defmodule Genetics.Evolution do
       IO.write("\r")
       best
     else
-      population
-      |> select(opts)
-      |> crossover(opts)
+      {parents, leftover} = select(population, opts)
+      children = crossover(parents, opts)
+
+      (children ++ leftover)
       |> mutation(opts)
       |> evolve(problem, opts)
     end
@@ -92,22 +93,52 @@ defmodule Genetics.Evolution do
   end
 
   def select(population, opts \\ []) do
-    select_operator = Keyword.get(opts, :select_type, &Select.select_elite/2)
-    result = select_operator.(population, opts)
+    select_operator = Keyword.get(opts, :select_type, &Select.select_elite/3)
+    select_rate = Keyword.get(opts, :select_rate, 0.8)
+
+    n = round(length(population) * select_rate)
+    n = if rem(n, 2) == 0, do: n, else: n + 1
+
+    parents = select_operator.(population, n, opts)
+    leftover = population |> MapSet.new() |> MapSet.difference(MapSet.new(parents))
+
+    parents = parents |> Enum.chunk_every(2) |> Enum.map(&List.to_tuple(&1))
+    result = {parents, MapSet.to_list(leftover)}
     # IO.gets("Select result: #{inspect(result)}\nPress Enter to continue...")
     result
   end
 
   def crossover(population, opts \\ []) do
-    crossover_operator = Keyword.get(opts, :crossover_type, &CrossOver.crossover_cx_one_point/2)
-    result = crossover_operator.(population, opts)
+    crossover_operator = Keyword.get(opts, :crossover_type, &CrossOver.crossover_cx_one_point/3)
+
+    result =
+      population
+      |> Enum.reduce(
+        [],
+        fn {p1, p2}, acc ->
+          {c1, c2} = crossover_operator.(p1, p2, opts)
+          [c1, c2 | acc]
+        end
+      )
+
     # IO.gets("Crossover result: #{inspect(result)}\nPress Enter to continue...")
     result
   end
 
   def mutation(population, opts \\ []) do
     mutation_operator = Keyword.get(opts, :mutation_type, &Mutation.mutation_shuffle/2)
-    result = mutation_operator.(population, opts)
+    mutation_probability = Keyword.get(opts, :mutation_probability, 0.05)
+
+    result =
+      population
+      |> Enum.map(fn chromosome ->
+        if :rand.uniform() < mutation_probability do
+          mutation_operator.(chromosome, opts)
+        else
+          chromosome
+        end
+      end)
+
     # IO.gets("Mutation result: #{inspect(result)}\nPress Enter to continue...")
     result
   end
