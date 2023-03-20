@@ -28,7 +28,7 @@ For this case, a possible genotype that represents this situation (genes) could 
 
 ### VRP Genetic Algorithm
 
-- Documentation
+- Improve the documentation (run `mix docs` and fix the misdocumentations)
 - Iteractive algorithm?
 
 ### Matrix providers
