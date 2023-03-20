@@ -5,7 +5,7 @@ defmodule Genetics.Problems.Speller do
   Hyperparameters
 
     - `target` an a-z no whitespaces string. By default `elixir`.
-    - `max_generation, termination criteria. By default `10_000`.
+    - `max_generation`, termination criteria. By default `10_000`.
 
   ## Examples
 

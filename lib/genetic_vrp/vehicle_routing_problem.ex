@@ -65,32 +65,8 @@ defmodule GeneticVrp.VehicleRoutingProblem do
       }
     ```
 
-    Note: This kind of trips are under development (not need to solve this problems right now)
+    Note: Other kind of trips as `go_trip` or `go_random` are not implemented yet.
 
-
-    - A `go_trip` route(s): The same start / end points (`fix_start` and `fix_end`) per vehicle:
-
-    ```json
-      GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_start: 6, fix_end: 0)
-        %Genetics.Types.Chromosome{
-          genes: [6, 10, 9, 0, 6, 3, 1, 0, 6, 4, 5, 0, 6, 8, 7, 0, 6, 2, 0],
-          size: 10,
-          fitness: 0,
-          age: 0
-        }
-      ```
-
-    - A `go_random` route(s): Each vehicle  has its own route with no coincidences:
-
-    ```json
-      GeneticVrp.VehicleRoutingProblem.genotype(size: 10)
-      %Genetics.Types.Chromosome{
-        genes: [0, 5, 9, 6, 10, 1, 3, 8, 7, 2, 4],
-        size: 10,
-        fitness: 0,
-        age: 0
-      }
-    ```
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome
@@ -109,7 +85,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
       - go_office:  Different starts and a common end.
       - go_random: Not related with the others. (TODO)
       - go_trip: A common start / end. (TODO)
-  We can fix the start, end of all the routes with `fix_start´ and `fix_end` hyperparameters.
+  We can fix the start, end of all the routes with `fix_start` and `fix_end` hyperparameters.
   ## Examples (for all, the vehicle_capacity is 4)
 
     # go_home:

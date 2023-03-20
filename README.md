@@ -1,20 +1,34 @@
 # GeneticVrp
 
-Genetic algorithm to resolve VRP problems
+Genetic algorithm to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetics`).
+
+The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks  "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of customers?". It generalises the travelling salesman problem (TSP).
 
 ## Genetic algorithm
 
-We create a permutation type genotype where every value represents a location
+VRP encoding as a permutation with a little customo characteristics. We use a list of  numbers to represent the list of locations ORDERED.
+Because the idea is to solve N stops with M vehicles, each vehicle has a capacity defined by `vehicle_capacity` hyperparameter.
+
+It is also possible to define different kinds of routes:
+
+- go_home: A common start (single pickup) and different ends (drop-offs).
+- go_office:  Different starts (pickups) and a common end (drop-off).
+
+An example of a `go_home`:
 
 ```console
-  [0,1,2,3,4]
+All locations: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+fix_start: 0. It means that the location with value 0 is the start for all the vehicles.
+- vehicle_1: [0, 1, 2, 3, 4]. The vehicle start at 0  and pickup all the riders (and must to stop on 1, 2, 3, 4)
+- vehicle_2: [0, 5, 6, 7, 8]
+For this case, a possible genotype that represents this situation (genes) could be: [0, 1, 2, 3, 4, 0, 5, 6, 7, 8] (but also [0, 7, 5, 4, 3, 0, 8, 1, 2, 6])
 ```
 
 ## TODO
 
 ### VRP Genetic Algorithm
 
-- Documentar todas las posibilidades de configuracion
+- Documentation
 - Iteractive algorithm?
 
 ### Matrix providers

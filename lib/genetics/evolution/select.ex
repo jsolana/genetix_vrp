@@ -25,7 +25,7 @@ defmodule Genetics.Evolution.Select do
   end
 
   @doc """
-  Random selection pays no mind to chromosome's fitness and select a random  `number_of_candidates' candidates from the population.
+  Random selection pays no mind to chromosome's fitness and select a random  `number_of_candidates` candidates from the population.
   Take care because this strategy is uncommon but is very useful if you goal is to obtain a high genetic diversity.
   """
   def select_random(population, number_of_candidates, _opts \\ []) do
