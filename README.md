@@ -4,6 +4,10 @@
 
 The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks  "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of riders?". It generalizes the traveling salesman problem (TSP).
 
+<div align="center">
+  <img width="400" height="300" src="guides/logo.png" onerror="this.onerror=null; this.src='assets/logo.png'">
+</div>
+
 ## Genetic algorithm details
 
 A genetic algorithm is a search heuristic that is inspired by Charles Darwin’s theory of natural evolution. This algorithm reflects the process of natural selection where the fittest individuals are selected for reproduction in order to produce offspring of the next generation.
