@@ -8,6 +8,17 @@ defmodule GeneticVrp.Types.Location do
   ```
 
   """
+  @typedoc """
+  Location type.
+
+  Location are represented as a `%Location{}`.
+  At a minimum a Location needs `:longitude` and `latitude`.
+
+  # Fields
+
+    - `:longitude`: `number()` with the longitude.
+    - `:latitude`: `number()` with the latitude.
+  """
   @type t :: %__MODULE__{
           latitude: number(),
           longitude: number()

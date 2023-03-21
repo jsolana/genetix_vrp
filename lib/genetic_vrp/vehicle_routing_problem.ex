@@ -8,42 +8,45 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   Additionally we also define custom operators as `crossover_custom` and `mutation_custom` to override these operators in the `Genetics.Evolution` algorithm.
 
   Custom mandatory hyperparameters:
-      - `crossover_type`:       Crossover operator. By defaul `crossover_cx_one_point/3`. To run successfully this problem, you need to override this property using `custom_crossover` function.
-      - `mutation_type`:        Mutation operator. By default `mutation_shuffle/2`. To run successfully this problem, you need to override this property using `custom_mutation` function.
-      - `sort_criteria`:        How to sort the population by its fitness score (max or min). By default min first.
-      - `matrix`:               `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
+
+  - `crossover_type`:       Crossover operator. By defaul `crossover_cx_one_point/3`. To run successfully this problem, you need to override this property using `custom_crossover` function.
+  - `mutation_type`:        Mutation operator. By default `mutation_shuffle/2`. To run successfully this problem, you need to override this property using `custom_mutation` function.
+  - `sort_criteria`:        How to sort the population by its fitness score (max or min). By default min first.
+  - `matrix`:               `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
 
   Optional hyperparameters:
 
-    - `fix_start`:            If all vehicles must start in a specific location. By default `-1` (no fix_start).
-    - `fix_end`:              If all vehicles must ends in a specific location. By default `-1` (no fix_start).
-    - `size`:                 Total number of locations. By default `10`.
-    - `population_size`:      Total number of individuals to run the algorithm. By default `100`.
-    - `vehicle_capacity`:     Number of riders / stops the vehicle can handle. By default `4`.
-    - `max_generation`:       Termination criteria. The max number of genertion to  generate the optimal routes. By defaul `10_000`.
+  - `fix_start`:            If all vehicles must start in a specific location. By default `-1` (no fix_start).
+  - `fix_end`:              If all vehicles must ends in a specific location. By default `-1` (no fix_start).
+  - `size`:                 Total number of locations. By default `10`.
+  - `population_size`:      Total number of individuals to run the algorithm. By default `100`.
+  - `vehicle_capacity`:     Number of riders / stops the vehicle can handle. By default `4`.
+  - `max_generation`:       Termination criteria. The max number of genertion to  generate the optimal routes. By defaul `10_000`.
 
 
-  For matrix:
-    - `speed_in_meters`:      To calculate the duration matrix for `GreatCircleDistance` provider. By default `50_000`.
-    -  `matrix_profile`:      Used for `OpenRouteServiceClient` provider to calculate the distante_duration matrix. By defaul `driving-car`.
+  For matrix providers:
+  - `speed_in_meters`:      To calculate the duration matrix for `GreatCircleDistance` provider. By default `50_000`.
+  -  `matrix_profile`:      Used for `OpenRouteServiceClient` provider to calculate the distante_duration matrix. By defaul `driving-car`.
+
+  You can check [here](lib/genetic_vrp/matrix/adapter/adapter.ex) to know the current available providers.
 
   To generate an individual chromosome:
 
-  iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
-  iex> individual = VRP.genotype(size: 10, fix_start: 0)
+      iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
+      iex> individual = VRP.genotype(size: 10, fix_start: 0)
 
   To generate a population of chromosomes:
 
-  iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
-  iex> population_size = 10
-  iex> population = for _ <- 1..population_size, do: VRP.genotype(size: 10, fix_start: 0)
-  iex> population = 1..population_size |> Enum.map(fn _index ->  VRP.genotype(size: 10, fix_start: 0) end)
+      iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
+      iex> population_size = 10
+      iex> population = for _ <- 1..population_size, do: VRP.genotype(size: 10, fix_start: 0)
+      iex> population = 1..population_size |> Enum.map(fn _index ->  VRP.genotype(size: 10, fix_start: 0) end)
 
   Depending of the hyperparameters, it is possible to define different kind of routes:
 
     - A `go_home` route(s): The same start point (`fix_start`) and differents end points per vehicle:
 
-    ```json
+    ```elixir
       GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_start: 6)
       %Genetics.Types.Chromosome{
         genes: [6, 9, 1, 5, 6, 4, 0, 2, 6, 7, 8, 3, 6, 10],
@@ -55,7 +58,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
 
     - A `go_office` route(s): The same end point (`fix_end`) and differents start point per vehicle:
 
-    ```json
+    ```elixir
       GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_end: 6)
       %Genetics.Types.Chromosome{
         genes: [7, 9, 8, 1, 6, 3, 0, 2, 4, 6, 5, 6],
@@ -65,7 +68,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
       }
     ```
 
-    Note: Other kind of trips as `go_trip` or `go_random` are not implemented yet.
+    *Note*: Other kind of trips as `go_trip` (with an  commont start and end location per vehicle) or `go_random` (no location in common between vehicles) are not implemented yet.
 
   """
   @behaviour Genetics.Problem
@@ -244,7 +247,9 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   end
 
   @doc """
-  Order-one crossover customized for the specific encoding of the problem. It works like this:
+  Order-one crossover customized for the specific encoding of the problem.
+
+  It works like this:
 
     1) Remove fix_start / fix_end (if exists)
     2) Select a random slice of genes from Parent 1.
@@ -322,8 +327,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   # end
 
   @doc """
-  To be defined and confirm if its useful (create diversity avoiding a premature convergence).
-  This is a custom mutation that swap two locations.
+  Swap two locations of the chromosome.
   """
   def custom_mutation(chromosome, opts \\ []) do
     # Logger.info("Custom mutation of the chromosome: #{inspect(chromosome)} with opts: #{inspect(opts)}")

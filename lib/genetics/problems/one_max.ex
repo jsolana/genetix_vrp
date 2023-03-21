@@ -9,13 +9,16 @@ defmodule Genetics.Problems.OneMax do
 
   ## Examples
 
-    iex> Genetics.Evolution.run(Genetics.Problems.OneMax, size: 1000)
+      iex> Genetics.Evolution.run(Genetics.Problems.OneMax, size: 1000)
 
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome
 
   @impl true
+  @doc """
+  Genotype implementation for OneMax problem. Bitstring.
+  """
   def genotype(opts \\ []) do
     size = Keyword.get(opts, :size, 42)
     genes = for _ <- 1..size, do: Enum.random(0..1)
@@ -23,9 +26,15 @@ defmodule Genetics.Problems.OneMax do
   end
 
   @impl true
+  @doc """
+  Fitness function implementation for OneMax problem.
+  """
   def fitness_function(chromosome, _opts \\ []), do: Enum.sum(chromosome.genes)
 
   @impl true
+  @doc """
+  Terminate implementation for OneMax problem.
+  """
   def terminate?([best | _], _opts \\ []) do
     IO.write("\r#{inspect(best.fitness)}")
     best.fitness == best.size

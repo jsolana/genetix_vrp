@@ -27,6 +27,17 @@ defmodule GeneticVrp.Types.DistanceDurationMatrix do
     }
   ```
   """
+  @typedoc """
+  DistanceDurationMatrix type.
+
+  DistanceDurationMatrix are represented as a `%DistanceDurationMatrix{}`.
+  At a minimum a DistanceDurationMatrix needs `:locations` and `matrix`.
+
+  # Fields
+
+    - `:locations`: `Enum` containing the locations.
+    - `:matrix`: `Map` with the distance / duration between each location in meters and seconds respectively.
+  """
   @type t :: %__MODULE__{
           locations: list(),
           matrix: map()

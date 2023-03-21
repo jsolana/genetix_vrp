@@ -7,7 +7,7 @@ defmodule Genetics.Evolution.CrossOver do
   Possibles strategies:
     - Single-point
     - Order-one
-    - Uniform (TODO)
+    - Uniform
     - Whole arithmetic Recombination (TODO)
 
   [More information](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm))
@@ -20,7 +20,7 @@ defmodule Genetics.Evolution.CrossOver do
   @doc """
   Single-point crossover is the most basic crossover strategy. It works like this:
 
-    1) Choose a random number k between 0..n-1 where n is the length of the parten chromosomes.
+    1) Choose a random number k between 0..n-1 where n is the length of the parten chromosomes. Works on blocks of genes.
     2) Split both parents at k to rpdocue four slices of genes.
     3) Swap the tails of each parent at k produce two new children.
 
@@ -76,5 +76,28 @@ defmodule Genetics.Evolution.CrossOver do
        genes: c2,
        size: parent_2.size
      }}
+  end
+
+  @doc """
+  Genes in the parent chromosome are treated separately (individually).
+  Uniform crossover works by paaring corresponding genes in a chromosome an swapping them according to a rate
+  defined by the `crossover_rate` hyperparameter. By default `0.5` (50% or probability to swap both genes).
+  """
+  def uniform(parent_1, parent_2, opts \\ []) do
+    rate = Keyword.get(opts, :crossover_rate, 0.5)
+
+    {c1, c2} =
+      parent_1.genes
+      |> Enum.zip(parent_2.genes)
+      |> Enum.map(fn {x, y} ->
+        if :rand.uniform() < rate do
+          {x, y}
+        else
+          {y, x}
+        end
+      end)
+      |> Enum.unzip()
+
+    {%Chromosome{parent_1 | genes: c1}, %Chromosome{parent_2 | genes: c2}}
   end
 end

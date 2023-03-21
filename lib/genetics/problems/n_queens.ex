@@ -9,13 +9,16 @@ defmodule Genetics.Problems.NQueens do
 
   ## Examples
 
-    iex> Genetics.Evolution.run(Genetics.Problems.NQueens, size: 8)
+      iex> Genetics.Evolution.run(Genetics.Problems.NQueens, size: 8)
 
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome
 
   @impl true
+  @doc """
+  Genotype implementation for NQueen problem. Permutation.
+  """
   def genotype(opts \\ []) do
     size = Keyword.get(opts, :size, 8)
     genes = Enum.shuffle(0..(size - 1))
@@ -23,6 +26,9 @@ defmodule Genetics.Problems.NQueens do
   end
 
   @impl true
+  @doc """
+  Fitness function implementation for NQueen problem.
+  """
   def fitness_function(chromosome, opts \\ []) do
     size = Keyword.get(opts, :size, 8)
 
@@ -52,6 +58,9 @@ defmodule Genetics.Problems.NQueens do
   end
 
   @impl true
+  @doc """
+  Terminate implementation for NQueen problem.
+  """
   def terminate?([best | _], _opts \\ []) do
     IO.write("\r#{inspect(best.fitness)}")
     best.fitness == best.size

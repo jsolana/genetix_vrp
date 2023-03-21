@@ -3,14 +3,15 @@ defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
 
   @moduledoc """
   Module that define functions to obtain the distance / duration matrix using the [OpenRouteService](https://openrouteservice.org/dev/#/api-docs/matrix).
-  We use `:matrix_profile` hyperparameter with default value `driving-car`.
+
+  You can use `:matrix_profile` hyperparameter to specify the profiles to be applied. By default `driving-car`.
 
   ## Examples
 
-    iex> alias GeneticVrp.Matrix.Adapter.OpenRouteService, as: MatrixProvider
-    iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
-    iex> {:ok, matrix} = GeneticVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
-    iex> true = matrix.locations  == locations
+        iex> alias GeneticVrp.Matrix.Adapter.OpenRouteService, as: MatrixProvider
+        iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
+        iex> {:ok, matrix} = GeneticVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
+        iex> true = matrix.locations  == locations
 
   Internally the `OpenRouteService Matrix endpoint` returns the distance / duration matrix from a list of locations.
   An example:

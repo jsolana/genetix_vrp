@@ -9,7 +9,7 @@ defmodule Genetics.Problems.Speller do
 
   ## Examples
 
-    iex> Genetics.Evolution.run(Genetics.Problems.Speller, target: "elixir", max_generation: 1)
+      iex> Genetics.Evolution.run(Genetics.Problems.Speller, target: "elixir", max_generation: 1)
 
   """
   @behaviour Genetics.Problem
@@ -17,6 +17,9 @@ defmodule Genetics.Problems.Speller do
 
   @default_target "elixir"
   @impl true
+  @doc """
+  Genotype implementation for Speller problem. Permutation
+  """
   def genotype(opts \\ []) do
     target = Keyword.get(opts, :target, @default_target)
     size = String.length(target)
@@ -29,6 +32,9 @@ defmodule Genetics.Problems.Speller do
   end
 
   @impl true
+  @doc """
+  Fitness function implementation for Speller problem.
+  """
   def fitness_function(chromosome, opts \\ []) do
     target = Keyword.get(opts, :target, @default_target)
     guess = List.to_string(chromosome.genes)
@@ -36,6 +42,9 @@ defmodule Genetics.Problems.Speller do
   end
 
   @impl true
+  @doc """
+  Terminate implementation for Speller problem.
+  """
   def terminate?([best | _], opts \\ []) do
     max_generation = Keyword.get(opts, :max_generation, 10_000)
     IO.write("\r#{inspect(best.fitness)}")

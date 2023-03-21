@@ -10,13 +10,16 @@ defmodule Genetics.Problems.ZeroMax do
 
   ## Examples
 
-    iex> Genetics.Evolution.run(Genetics.Problems.ZeroMax, size: 1000, sort_criteria: &<=/2)
+      iex> Genetics.Evolution.run(Genetics.Problems.ZeroMax, size: 1000, sort_criteria: &<=/2)
 
   """
   @behaviour Genetics.Problem
   alias Genetics.Types.Chromosome
 
   @impl true
+  @doc """
+  Genotype implementation for ZeroMax problem. Bitstring
+  """
   def genotype(opts \\ []) do
     size = Keyword.get(opts, :size, 42)
     genes = for _ <- 1..size, do: Enum.random(0..1)
@@ -24,9 +27,15 @@ defmodule Genetics.Problems.ZeroMax do
   end
 
   @impl true
+  @doc """
+  fitness function implementation for ZeroMax problem.
+  """
   def fitness_function(chromosome, _opts \\ []), do: Enum.sum(chromosome.genes)
 
   @impl true
+  @doc """
+  Terminate function implementation for ZeroMax problem.
+  """
   def terminate?([best | _], _opts \\ []) do
     IO.write("\r#{inspect(best.fitness)}")
     best.fitness < 1
