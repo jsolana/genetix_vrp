@@ -1,6 +1,6 @@
 defmodule GeneticVrp do
   @moduledoc """
-  This module define the functions to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetics`).
+  This module define the functions to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetix`).
   The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks
   "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of customers?"
   It generalises the travelling salesman problem (TSP).
@@ -37,21 +37,19 @@ defmodule GeneticVrp do
       iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [21.1,60.1]]
       iex> GeneticVrp.calculate_routes(locations, fix_start: 0, max_generation: 10, population_size: 100)
 
-      # To run the `VehicleRoutingProblem` you can use directly the `Genetics.Evolution` with the options required
+      # To run the `VehicleRoutingProblem` you can use directly the `Genetix` with the options required
 
       iex> alias GeneticVrp.VehicleRoutingProblem
-      iex> alias Genetics.Evolution
       iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [21.1,60.1]]
       iex> {:ok, matrix} = GeneticVrp.get_matrix(locations)
       iex> opts = [matrix: matrix, max_generation: 1, fix_start: 0]
-      iex> Evolution.run(VehicleRoutingProblem, opts )
+      iex> Genetix.run(VehicleRoutingProblem, opts )
 
   """
 
   # @adapter GeneticVrp.Matrix.Adapter.OpenRouteServiceClient
   # alias GeneticVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
   alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: Adapter
-  alias Genetics.Evolution
   alias GeneticVrp.VehicleRoutingProblem
   require Logger
 
@@ -73,7 +71,7 @@ defmodule GeneticVrp do
     case get_matrix(locations, opts) do
       {:ok, matrix} ->
         soln =
-          Evolution.run(
+          Genetix.run(
             VehicleRoutingProblem,
             opts ++
               [

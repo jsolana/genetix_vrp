@@ -1,11 +1,11 @@
 defmodule GeneticVrp.VehicleRoutingProblem do
   @moduledoc """
-  A specific problem implementation for Vehicle Routing Problem (VRP). Following the instructions of `Genetics.Problem`  we need to provide a definition of:
+  A specific problem implementation for Vehicle Routing Problem (VRP). Following the instructions of `Genetix.Problem`  we need to provide a definition of:
   - How to generate a genotype / chromosome: `genotype` function.
   - How to score a chromosome: `fitnes_score` function.
   - How to determine if the algorithm ends or not: `terminate` function.
 
-  Additionally we also define custom operators as `crossover_custom` and `mutation_custom` to override these operators in the `Genetics.Evolution` algorithm.
+  Additionally we also define custom operators as `crossover_custom` and `mutation_custom` to override these operators in the `Genetix` algorithm.
 
   Custom mandatory hyperparameters:
 
@@ -48,7 +48,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
 
     ```elixir
       GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_start: 6)
-      %Genetics.Types.Chromosome{
+      %Genetix.Types.Chromosome{
         genes: [6, 9, 1, 5, 6, 4, 0, 2, 6, 7, 8, 3, 6, 10],
         size: 10,
         fitness: 0,
@@ -60,7 +60,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
 
     ```elixir
       GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_end: 6)
-      %Genetics.Types.Chromosome{
+      %Genetix.Types.Chromosome{
         genes: [7, 9, 8, 1, 6, 3, 0, 2, 4, 6, 5, 6],
         size: 10,
         fitness: 0,
@@ -71,9 +71,9 @@ defmodule GeneticVrp.VehicleRoutingProblem do
     *Note*: Other kind of trips as `go_trip` (with an  commont start and end location per vehicle) or `go_random` (no location in common between vehicles) are not implemented yet.
 
   """
-  @behaviour Genetics.Problem
-  alias Genetics.Types.Chromosome
-  # alias Genetics.Evolution.Mutation
+  @behaviour Genetix.Problem
+  alias Genetix.Types.Chromosome
+  # alias Genetix.Mutation
   alias GeneticVrp.Utils
 
   require Logger

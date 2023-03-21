@@ -1,6 +1,6 @@
 # GeneticVrp
 
-`GeneticVrp` is an elixir application that provides a way to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetics`).
+`GeneticVrp` is an elixir application that provides a way to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetix`).
 
 The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks  "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of riders?". It generalizes the traveling salesman problem (TSP).
 

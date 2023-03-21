@@ -49,6 +49,7 @@ defmodule GeneticVrp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:genetix, "~> 0.1.0"},
       {:tesla, "~> 1.5"},
       {:plug_cowboy, "~> 2.5.2"},
       {:poison, "~> 5.0"},
