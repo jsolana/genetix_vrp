@@ -1,10 +1,10 @@
-defmodule GeneticVrp.Types.DistanceDurationMatrix do
+defmodule GenetixVrp.Types.DistanceDurationMatrix do
   @moduledoc """
   Distance duration matrix type definition. Both properties (location and matrix) are mandatory.
   An example of `DistanceDurationMatrix`:
 
   ```elixir
-    %GeneticVrp.Types.DistanceDurationMatrix{
+    %GenetixVrp.Types.DistanceDurationMatrix{
       locations: [[9.7, 48.4], [9.2, 49.1], [10.1, 50.1], [20.1, 60.1]],
       matrix: %{
         {0, 0} => {0, 0},

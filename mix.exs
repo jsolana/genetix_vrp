@@ -1,19 +1,19 @@
-defmodule GeneticVrp.MixProject do
+defmodule GenetixVrp.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :genetic_vrp,
+      app: :genetix_vrp,
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: description(),
       deps: deps(),
-      name: "GeneticVrp",
+      name: "GenetixVrp",
       package: package(),
-      source_url: "https://github.com/jsolana/genetic_vrp",
-      homepage_url: "https://github.com/jsolana/genetic_vrp",
+      source_url: "https://github.com/jsolana/genetix_vrp",
+      homepage_url: "https://github.com/jsolana/genetix_vrp",
       docs: docs()
     ]
   end
@@ -25,14 +25,14 @@ defmodule GeneticVrp.MixProject do
   defp package() do
     %{
       maintainers: ["Javi Solana"],
-      links: %{"GitHub" => "https://github.com/jsolana/genetic_vrp"}
+      links: %{"GitHub" => "https://github.com/jsolana/genetix_vrp"}
     }
   end
 
   defp docs() do
     [
       # The main page in the docs
-      main: "GeneticVrp",
+      main: "GenetixVrp",
       logo: "guides/logo.png",
       extras: ["README.md", "guides/documentation.md"]
     ]
@@ -42,7 +42,7 @@ defmodule GeneticVrp.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {GeneticVrp.Application, []}
+      mod: {GenetixVrp.Application, []}
     ]
   end
 

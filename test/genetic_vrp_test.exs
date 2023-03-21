@@ -1,4 +1,4 @@
-defmodule GeneticVrpTest do
+defmodule GenetixVrpTest do
   use ExUnit.Case
-  doctest GeneticVrp
+  doctest GenetixVrp
 end

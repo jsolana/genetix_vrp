@@ -1,6 +1,6 @@
-# GeneticVrp
+# GenetixVrp
 
-`GeneticVrp` is an elixir application that provides a way to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetix`).
+`GenetixVrp` is an elixir application that provides a way to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms using [Genetix](https://hex.pm/packages/genetix).
 
 The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks  "What is the optimal set of routes for a fleet of vehicles to traverse in order to deliver to a given set of riders?". It generalizes the traveling salesman problem (TSP).
 
@@ -27,7 +27,7 @@ An individual is characterized by a set of parameters (variables) known as Genes
 - `Real-Value genotypes`: Represent solutions using real values. Very common in problems involving weights or similar. Ex `[0.25, 1.12, 9.90, 6.01]`.
 - `Tree/Graph genotypes`: Based on tree / graph structures.
 
-`GeneticVrp` encoding the chromosomes as `permutation genotypes` with a little custom characteristics. 
+`GenetixVrp` encoding the chromosomes as `permutation genotypes` with a little custom characteristics. 
 We use a list of  numbers to represent the locations to stop, ORDERED, and have to be splitted in different vehicles. 
 In our case we have two uses cases very well defined:
 
@@ -50,14 +50,14 @@ You can use `hyperparameters` to customize the operators to apply during the exe
 
 Sometimes, selection and crossover are enough for a complete genetic algorithm.
 
-The `VehicleRoutingProblem` defines its own custom hyperparameters. For more information you can take a look at the [VehicleRoutingProblem module](lib/genetic_vrp/vehicle_routing_problem.ex).
+The `VehicleRoutingProblem` defines its own custom hyperparameters. For more information you can take a look at the [VehicleRoutingProblem module](lib/genetix_vrp/vehicle_routing_problem.ex).
 
 #### Custom mandatory hyperparameters
 
 - `crossover_type`: Crossover operator. By default `crossover_cx_one_point/3`. To run successfully this problem, you need to override this property using `custom_crossover` function.
 - `mutation_type`: Mutation operator. By default `mutation_shuffle/2`. To run successfully this problem, you need to override this property using `custom_mutation` function.
 - `sort_criteria`: How to sort the population by its fitness score (max or min). By default min first.
-- `matrix`: `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
+- `matrix`: `GenetixVrp.Types.DistanceDurationMatrix` data for the locations provided.
 
 #### Optional hyperparameters
 

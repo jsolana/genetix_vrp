@@ -1,4 +1,4 @@
-defmodule GeneticVrp.VehicleRoutingProblem do
+defmodule GenetixVrp.VehicleRoutingProblem do
   @moduledoc """
   A specific problem implementation for Vehicle Routing Problem (VRP). Following the instructions of `Genetix.Problem`  we need to provide a definition of:
   - How to generate a genotype / chromosome: `genotype` function.
@@ -12,7 +12,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   - `crossover_type`:       Crossover operator. By defaul `crossover_cx_one_point/3`. To run successfully this problem, you need to override this property using `custom_crossover` function.
   - `mutation_type`:        Mutation operator. By default `mutation_shuffle/2`. To run successfully this problem, you need to override this property using `custom_mutation` function.
   - `sort_criteria`:        How to sort the population by its fitness score (max or min). By default min first.
-  - `matrix`:               `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
+  - `matrix`:               `GenetixVrp.Types.DistanceDurationMatrix` data for the locations provided.
 
   Optional hyperparameters:
 
@@ -28,16 +28,16 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   - `speed_in_meters`:      To calculate the duration matrix for `GreatCircleDistance` provider. By default `50_000`.
   -  `matrix_profile`:      Used for `OpenRouteServiceClient` provider to calculate the distante_duration matrix. By defaul `driving-car`.
 
-  You can check [here](lib/genetic_vrp/matrix/adapter/adapter.ex) to know the current available providers.
+  You can check [here](lib/genetix_vrp/matrix/adapter/adapter.ex) to know the current available providers.
 
   To generate an individual chromosome:
 
-      iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
+      iex> alias GenetixVrp.VehicleRoutingProblem, as: VRP
       iex> individual = VRP.genotype(size: 10, fix_start: 0)
 
   To generate a population of chromosomes:
 
-      iex> alias GeneticVrp.VehicleRoutingProblem, as: VRP
+      iex> alias GenetixVrp.VehicleRoutingProblem, as: VRP
       iex> population_size = 10
       iex> population = for _ <- 1..population_size, do: VRP.genotype(size: 10, fix_start: 0)
       iex> population = 1..population_size |> Enum.map(fn _index ->  VRP.genotype(size: 10, fix_start: 0) end)
@@ -47,7 +47,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
     - A `go_home` route(s): The same start point (`fix_start`) and differents end points per vehicle:
 
     ```elixir
-      GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_start: 6)
+      GenetixVrp.VehicleRoutingProblem.genotype(size: 10, fix_start: 6)
       %Genetix.Types.Chromosome{
         genes: [6, 9, 1, 5, 6, 4, 0, 2, 6, 7, 8, 3, 6, 10],
         size: 10,
@@ -59,7 +59,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
     - A `go_office` route(s): The same end point (`fix_end`) and differents start point per vehicle:
 
     ```elixir
-      GeneticVrp.VehicleRoutingProblem.genotype(size: 10, fix_end: 6)
+      GenetixVrp.VehicleRoutingProblem.genotype(size: 10, fix_end: 6)
       %Genetix.Types.Chromosome{
         genes: [7, 9, 8, 1, 6, 3, 0, 2, 4, 6, 5, 6],
         size: 10,
@@ -74,7 +74,7 @@ defmodule GeneticVrp.VehicleRoutingProblem do
   @behaviour Genetix.Problem
   alias Genetix.Types.Chromosome
   # alias Genetix.Mutation
-  alias GeneticVrp.Utils
+  alias GenetixVrp.Utils
 
   require Logger
 

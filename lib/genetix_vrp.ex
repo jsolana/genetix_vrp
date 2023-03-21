@@ -1,4 +1,4 @@
-defmodule GeneticVrp do
+defmodule GenetixVrp do
   @moduledoc """
   This module define the functions to solve Vehicle Routing Problems (AKA `VRP`) using genetic algorithms (using `Genetix`).
   The vehicle routing problem (VRP) is a combinatorial optimization and integer programming problem which asks
@@ -16,10 +16,10 @@ defmodule GeneticVrp do
 
   Mandatory hyperparameters:
 
-  - `matrix`: `GeneticVrp.Types.DistanceDurationMatrix` data for the locations provided.
+  - `matrix`: `GenetixVrp.Types.DistanceDurationMatrix` data for the locations provided.
 
 
-  For more information about the hyperparameters that the problem accept, check the documentation of `GeneticVrp.VehicleRoutingProblem`.
+  For more information about the hyperparameters that the problem accept, check the documentation of `GenetixVrp.VehicleRoutingProblem`.
 
   When call `calculate_routes/2` internally:
 
@@ -35,22 +35,22 @@ defmodule GeneticVrp do
   ## Examples
 
       iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [21.1,60.1]]
-      iex> GeneticVrp.calculate_routes(locations, fix_start: 0, max_generation: 10, population_size: 100)
+      iex> GenetixVrp.calculate_routes(locations, fix_start: 0, max_generation: 10, population_size: 100)
 
       # To run the `VehicleRoutingProblem` you can use directly the `Genetix` with the options required
 
-      iex> alias GeneticVrp.VehicleRoutingProblem
+      iex> alias GenetixVrp.VehicleRoutingProblem
       iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1], [19.7, 48.4],[19.2,49.1],[11.1, 50.1], [21.1,60.1]]
-      iex> {:ok, matrix} = GeneticVrp.get_matrix(locations)
+      iex> {:ok, matrix} = GenetixVrp.get_matrix(locations)
       iex> opts = [matrix: matrix, max_generation: 1, fix_start: 0]
       iex> Genetix.run(VehicleRoutingProblem, opts )
 
   """
 
-  # @adapter GeneticVrp.Matrix.Adapter.OpenRouteServiceClient
-  # alias GeneticVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
-  alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: Adapter
-  alias GeneticVrp.VehicleRoutingProblem
+  # @adapter GenetixVrp.Matrix.Adapter.OpenRouteServiceClient
+  # alias GenetixVrp.Matrix.Adapter.OpenRouteServiceClient, as: Adapter
+  alias GenetixVrp.Matrix.Adapter.GreatCircleDistance, as: Adapter
+  alias GenetixVrp.VehicleRoutingProblem
   require Logger
 
   @doc """

@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Endpoint.Http do
+defmodule GenetixVrp.Endpoint.Http do
   use Plug.Router
 
   @moduledoc false
@@ -19,7 +19,7 @@ defmodule GeneticVrp.Endpoint.Http do
   )
 
   def init(options) do
-    Logger.info("Running GeneticVrp.Endpoint.Http with Cowboy using http://0.0.0.0:4001")
+    Logger.info("Running GenetixVrp.Endpoint.Http with Cowboy using http://0.0.0.0:4001")
 
     options
   end
@@ -29,7 +29,7 @@ defmodule GeneticVrp.Endpoint.Http do
 
     locations = Poison.decode!(body)["locations"]
 
-    case GeneticVrp.calculate_routes(locations) do
+    case GenetixVrp.calculate_routes(locations) do
       {:ok, response} ->
         conn
         |> put_resp_content_type("application/json")
@@ -47,7 +47,7 @@ defmodule GeneticVrp.Endpoint.Http do
 
     locations = Poison.decode!(body)["locations"]
 
-    case GeneticVrp.get_matrix(locations) do
+    case GenetixVrp.get_matrix(locations) do
       {:ok, response} ->
         conn
         |> put_resp_content_type("application/json")

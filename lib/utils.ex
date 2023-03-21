@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Utils do
+defmodule GenetixVrp.Utils do
   @moduledoc false
 
   @doc """
@@ -9,7 +9,7 @@ defmodule GeneticVrp.Utils do
 
     iex> list_of_lists = [[0,1,2],[3,4,5], [6,7,8]]
     iex> %{{0, 0} => 0,{0, 1} => 1, {0, 2} => 2, {1, 0} => 3,
-    ...> {1, 1} => 4, {1, 2} => 5, {2, 0} => 6, {2, 1} => 7, {2, 2} => 8 } = GeneticVrp.Utils.list_of_lists_to_map(list_of_lists)
+    ...> {1, 1} => 4, {1, 2} => 5, {2, 0} => 6, {2, 1} => 7, {2, 2} => 8 } = GenetixVrp.Utils.list_of_lists_to_map(list_of_lists)
 
   """
   def list_of_lists_to_map(list_of_lists) do
@@ -30,10 +30,10 @@ defmodule GeneticVrp.Utils do
   ## Examples
 
     iex> deny_numbers = [0,1,2,3,4,5,6,7,8]
-    iex> 9 = GeneticVrp.Utils.random_allow_number(deny_numbers)
+    iex> 9 = GenetixVrp.Utils.random_allow_number(deny_numbers)
 
     iex> deny_numbers = [1]
-    iex> 1 != GeneticVrp.Utils.random_allow_number(deny_numbers)
+    iex> 1 != GenetixVrp.Utils.random_allow_number(deny_numbers)
   """
   def random_allow_number(deny_numbers, opts \\ []) do
     size = Keyword.get(opts, :size, 10)
@@ -50,10 +50,10 @@ defmodule GeneticVrp.Utils do
   ## Examples
 
     iex> list = [0,1,2,3,4,5,6,7,8]
-    iex> [8, 1, 2, 3, 4, 5, 6, 7, 0] = GeneticVrp.Utils.swap(list, 0, 8)
+    iex> [8, 1, 2, 3, 4, 5, 6, 7, 0] = GenetixVrp.Utils.swap(list, 0, 8)
 
     iex> list = [0,1,2,3,4,5,6,7,8]
-    iex> [1, 0, 3, 2, 4, 5, 6, 7, 8] = GeneticVrp.Utils.swap(list, 0, 1) |> GeneticVrp.Utils.swap(2, 3)
+    iex> [1, 0, 3, 2, 4, 5, 6, 7, 8] = GenetixVrp.Utils.swap(list, 0, 1) |> GenetixVrp.Utils.swap(2, 3)
 
   """
   def swap(list, position_1, position_2) do

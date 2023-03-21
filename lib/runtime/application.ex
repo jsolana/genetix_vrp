@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Application do
+defmodule GenetixVrp.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,12 +8,12 @@ defmodule GeneticVrp.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: GeneticVrp.Endpoint.Http, options: [port: 4001]}
+      {Plug.Cowboy, scheme: :http, plug: GenetixVrp.Endpoint.Http, options: [port: 4001]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: GeneticVrp.Supervisor]
+    opts = [strategy: :one_for_one, name: GenetixVrp.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Matrix.Adapter do
+defmodule GenetixVrp.Matrix.Adapter do
   @moduledoc """
   Behaviour for calculate distance duration matrix.
   Distance will be provided in meters.
@@ -8,7 +8,7 @@ defmodule GeneticVrp.Matrix.Adapter do
 
   ```elixir
       {:ok,
-      %GeneticVrp.Types.DistanceDurationMatrix{
+      %GenetixVrp.Types.DistanceDurationMatrix{
         locations: [[9.7, 48.4], [9.2, 49.1], [10.1, 50.1], [20.1, 60.1]],
         matrix: %{
           {0, 0} => {0, 0},
@@ -31,7 +31,7 @@ defmodule GeneticVrp.Matrix.Adapter do
       }}
   ```
   """
-  alias GeneticVrp.Types.{DistanceDurationMatrix, Location}
+  alias GenetixVrp.Types.{DistanceDurationMatrix, Location}
 
   @doc """
   Returns a matrix of distance / duration related of the locations provided:

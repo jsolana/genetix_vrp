@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
+defmodule GenetixVrp.Matrix.Adapter.OpenRouteService do
   use Tesla
 
   @moduledoc """
@@ -8,9 +8,9 @@ defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
 
   ## Examples
 
-        iex> alias GeneticVrp.Matrix.Adapter.OpenRouteService, as: MatrixProvider
+        iex> alias GenetixVrp.Matrix.Adapter.OpenRouteService, as: MatrixProvider
         iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
-        iex> {:ok, matrix} = GeneticVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
+        iex> {:ok, matrix} = GenetixVrp.Matrix.Adapter.OpenRouteServiceClient.get_distance_duration_matrix(locations)
         iex> true = matrix.locations  == locations
 
   Internally the `OpenRouteService Matrix endpoint` returns the distance / duration matrix from a list of locations.
@@ -171,10 +171,10 @@ defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
   ```
 
   """
-  alias GeneticVrp.Matrix.Adapter
-  alias GeneticVrp.Utils
+  alias GenetixVrp.Matrix.Adapter
+  alias GenetixVrp.Utils
 
-  @behaviour GeneticVrp.Matrix.Adapter
+  @behaviour GenetixVrp.Matrix.Adapter
 
   require Logger
 
@@ -213,7 +213,7 @@ defmodule GeneticVrp.Matrix.Adapter.OpenRouteService do
         distances = Utils.list_of_lists_to_map(response.body["distances"])
         durations = Utils.list_of_lists_to_map(response.body["durations"])
 
-        matrix = %GeneticVrp.Types.DistanceDurationMatrix{
+        matrix = %GenetixVrp.Types.DistanceDurationMatrix{
           locations: locations,
           matrix:
             Enum.reduce(distances, %{}, fn {key, _value}, acc ->

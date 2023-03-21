@@ -1,4 +1,4 @@
-defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
+defmodule GenetixVrp.Matrix.Adapter.GreatCircleDistance do
   @moduledoc """
   Distance duration matrix implementation using a Great circle distance implementation.
   The great-circle distance, orthodromic distance, or spherical distance is the distance along a great circle.
@@ -18,17 +18,17 @@ defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
 
   ## Examples
 
-  iex> alias GeneticVrp.Matrix.Adapter.GreatCircleDistance, as: MatrixProvider
+  iex> alias GenetixVrp.Matrix.Adapter.GreatCircleDistance, as: MatrixProvider
   iex> locations = [[9.7, 48.4],[9.2,49.1],[10.1, 50.1], [20.1,60.1]]
     iex> {:ok, matrix} = MatrixProvider.get_distance_duration_matrix(locations)
     iex> true = (matrix.locations == locations)
 
   """
 
-  @behaviour GeneticVrp.Matrix.Adapter
+  @behaviour GenetixVrp.Matrix.Adapter
 
-  alias GeneticVrp.Types.Location
-  alias GeneticVrp.Utils
+  alias GenetixVrp.Types.Location
+  alias GenetixVrp.Utils
   require Logger
 
   @impl true
@@ -37,7 +37,7 @@ defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
     distances = get_distances(locations, opts)
     durations = get_durations(locations, opts)
 
-    matrix = %GeneticVrp.Types.DistanceDurationMatrix{
+    matrix = %GenetixVrp.Types.DistanceDurationMatrix{
       locations: locations,
       matrix:
         Enum.reduce(distances, %{}, fn {key, _value}, acc ->
@@ -52,9 +52,9 @@ defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
     locations
     |> Enum.map(fn [lat1, long1] ->
       Enum.map(locations, fn [lat2, long2] ->
-        GeneticVrp.Matrix.Adapter.GreatCircleDistance.get_great_circle_distance(
-          %GeneticVrp.Types.Location{latitude: lat1, longitude: long1},
-          %GeneticVrp.Types.Location{latitude: lat2, longitude: long2}
+        GenetixVrp.Matrix.Adapter.GreatCircleDistance.get_great_circle_distance(
+          %GenetixVrp.Types.Location{latitude: lat1, longitude: long1},
+          %GenetixVrp.Types.Location{latitude: lat2, longitude: long2}
         )
       end)
     end)
@@ -65,9 +65,9 @@ defmodule GeneticVrp.Matrix.Adapter.GreatCircleDistance do
     locations
     |> Enum.map(fn [lat1, long1] ->
       Enum.map(locations, fn [lat2, long2] ->
-        GeneticVrp.Matrix.Adapter.GreatCircleDistance.get_duration_from_location(
-          %GeneticVrp.Types.Location{latitude: lat1, longitude: long1},
-          %GeneticVrp.Types.Location{latitude: lat2, longitude: long2}
+        GenetixVrp.Matrix.Adapter.GreatCircleDistance.get_duration_from_location(
+          %GenetixVrp.Types.Location{latitude: lat1, longitude: long1},
+          %GenetixVrp.Types.Location{latitude: lat2, longitude: long2}
         )
       end)
     end)
