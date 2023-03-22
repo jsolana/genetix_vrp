@@ -96,12 +96,6 @@ defmodule GenetixVrp do
   Retrieves the distance / duration matrix in meters / seconds for the locations list provided.
   """
   def get_matrix(locations, opts \\ []) do
-    case Adapter.get_distance_duration_matrix(locations, opts) do
-      {:ok, matrix} ->
-        {:ok, matrix}
-
-      {:error, status} ->
-        {:error, status}
-    end
+    Adapter.get_distance_duration_matrix(locations, opts)
   end
 end
