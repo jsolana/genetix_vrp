@@ -49,12 +49,16 @@ defmodule GenetixVrp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:genetix, "~> 0.1.0"},
+      {:genetix, "~> 0.3.0"},
       {:tesla, "~> 1.5"},
       {:plug_cowboy, "~> 2.5.2"},
       {:poison, "~> 5.0"},
-      {:credo, "~> 1.6"},
-      {:ex_doc, "~> 0.29", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false},
+      {:benchee, "~> 1.1"},
+      {:exprof, "~> 0.2.4"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
+      {:stream_data, "~> 0.5.0", only: :test}
     ]
   end
 end

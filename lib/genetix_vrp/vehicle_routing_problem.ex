@@ -239,11 +239,10 @@ defmodule GenetixVrp.VehicleRoutingProblem do
   defp get_vehicle_capacity(_fix_start, _fix_end, vehicle_capacity), do: vehicle_capacity + 1
 
   @impl true
-  def terminate?([best | _], opts \\ []) do
+  def terminate?([best | _], generation, opts \\ []) do
     max_generation = Keyword.get(opts, :max_generation, 10_000)
-    IO.write("\r#{inspect(best.fitness)}")
-    # Logger.info("\r#{inspect(best.fitness)}")
-    best.age == max_generation
+    IO.write("\r#{best.fitness}")
+    generation == max_generation
   end
 
   @doc """
